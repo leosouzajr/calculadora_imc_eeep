@@ -29,48 +29,50 @@ class _TelaState extends State<Tela> {
           )
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Icon(
-              Icons.person_outline,
-              size: 120,
-              color: Colors.green,
-            ),
-            TextField(
-              controller: pesoController,
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                  labelText: "Peso(kg)",
-                  labelStyle: TextStyle(color: Colors.green, fontSize: 23)),
-              style: TextStyle(color: Colors.green, fontSize: 20),
-            ),
-            TextField(
-              controller: alturaController,
-              style: TextStyle(color: Colors.green, fontSize: 20),
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                  labelText: "Altura(m)",
-                  labelStyle: TextStyle(color: Colors.green, fontSize: 23)),
-            ),
-            RaisedButton(
-              child: Text("Calcular",
-                  style: TextStyle(color: Colors.white, fontSize: 26)),
-              color: Colors.green,
-              onPressed: () {
-                calcularImc();
-              },
-            ),
-            Text(
-              info,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 28, color: Colors.green),
-            )
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Icon(
+                Icons.person_outline,
+                size: 120,
+                color: Colors.green,
+              ),
+              TextField(
+                controller: pesoController,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: "Peso(kg)",
+                    labelStyle: TextStyle(color: Colors.green, fontSize: 23)),
+                style: TextStyle(color: Colors.green, fontSize: 20),
+              ),
+              TextField(
+                controller: alturaController,
+                style: TextStyle(color: Colors.green, fontSize: 20),
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: "Altura(m)",
+                    labelStyle: TextStyle(color: Colors.green, fontSize: 23)),
+              ),
+              RaisedButton(
+                child: Text("Calcular",
+                    style: TextStyle(color: Colors.white, fontSize: 26)),
+                color: Colors.green,
+                onPressed: () {
+                  calcularImc();
+                },
+              ),
+              Text(
+                info,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 28, color: Colors.green),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -82,7 +84,20 @@ class _TelaState extends State<Tela> {
     double imc = peso / (altura * altura);
 
     setState(() {
-      info = "o imc foi ${imc.toStringAsPrecision(4)}";
+      if (imc < 18.6) {
+        info = "imc:${imc.toStringAsPrecision(4)} (ABAIXO DO PESO)";
+      } else if (imc >= 18.6 && imc <= 24.9) {
+        info = "imc:${imc.toStringAsPrecision(4)} (PESO IDEAL)";
+      }else if (imc > 24.9 && imc <= 29.9) {
+        info = "imc:${imc.toStringAsPrecision(4)} (LEVEMENTE ACIMAD DO PESO)";
+      }else if (imc > 29.9 && imc <= 34.9) {
+        info = "imc:${imc.toStringAsPrecision(4)} (OBESIDADE GRAU I)";
+      }else if (imc > 34.9 && imc <= 39.9) {
+        info = "imc:${imc.toStringAsPrecision(4)} (OBESIDADE GRAU II)";
+      }else if (imc > 39.9) {
+        info = "imc:${imc.toStringAsPrecision(4)} (OBESIDADE GRAU III)";
+      }
+
     });
   }
 
@@ -90,8 +105,7 @@ class _TelaState extends State<Tela> {
     pesoController.text = "";
     alturaController.text = "";
     setState(() {
-       info = "Informe seus dados";
+      info = "Informe seus dados";
     });
-   
   }
 }
